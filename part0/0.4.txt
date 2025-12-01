@@ -1,0 +1,6 @@
+sequenceDiagram
+    broswer -> server, form, POST, https://studies.cs.helsinki.fi/exampleapp/new_note
+    broswer -> server -> broswer, HTML, GET, https://studies.cs.helsinki.fi/exampleapp/notes
+    broswer -> server -> broswer, CSS, GET, https://studies.cs.helsinki.fi/exampleapp/main.css
+    broswer -> server -> broswer, js, GET, https://studies.cs.helsinki.fi/exampleapp/main.js
+    broswer -> server -> broswer, json, GET, https://studies.cs.helsinki.fi/exampleapp/data.json

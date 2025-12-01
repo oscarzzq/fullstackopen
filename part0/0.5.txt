@@ -1,0 +1,4 @@
+broswer -> server -> broswer, GET, HTML
+broswer -> server -> broswer, GET, CSS
+broswer -> server -> broswer, GET, js
+broswer -> server -> broswer, GET, json
