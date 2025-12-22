@@ -1,15 +1,9 @@
-const Name = ({ person }) => {
-  return (
-    <p>
-      {person.name} {person.number}
-    </p>
-  )
-}
+import Name from './Name'
 
-const ShowPersons = ({ persons }) => {
+const ShowPersons = ({ persons, deleteWithId }) => {
     return (
         <>
-            {persons.map(person => <Name key={person.id} person={person} />)}
+            {persons.map(person => <Name key={person.id} person={person} deletion={() => deleteWithId(person)}/>)}
         </>
     )
 }
