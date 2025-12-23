@@ -1,8 +1,5 @@
-import { useState } from 'react'
-import countriesService from '../services/country'
-
-
-const ShowCountries = ({ countriesMatching, allData }) => {
+const ShowCountries = ({ countriesMatching, setSearch }) => {
+    console.log(countriesMatching)
     if (countriesMatching === null) {
         return
     }
@@ -14,7 +11,7 @@ const ShowCountries = ({ countriesMatching, allData }) => {
         )
     }
     else if (countriesMatching.length === 1) {
-        const oneCountry = allData.filter(country => country.name.common === countriesMatching[0])[0]
+        const oneCountry = countriesMatching[0]
         console.log(oneCountry)
         return (
             <div>
@@ -33,7 +30,9 @@ const ShowCountries = ({ countriesMatching, allData }) => {
     else {
         return (
             <div>
-                {countriesMatching.map(country => <p>{country}</p>)}
+                {countriesMatching.map(country => 
+                    <p>{country.name.common} <button key={country.name.common} onClick={() => setSearch(country.name.common)} >Show</button></p>
+                )}
             </div>
         )
     }
