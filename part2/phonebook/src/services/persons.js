@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "http://localhost:3001/persons"
+const baseUrl = "https://phonebook-p9sb.onrender.com/api/persons"
 
 const getAll = () => {
     const request = axios.get(baseUrl)
@@ -12,7 +12,6 @@ const create = (newPerson) => {
 }
 
 const deletePerson = (id) => {
-    console.log(id + 'delete')
     const request = axios.delete(baseUrl + '/' + id)
     return request.then(response => response.data)
 }

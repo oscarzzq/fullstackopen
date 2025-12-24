@@ -3,8 +3,11 @@ import Filter from './components/Filter'
 import ShowPersons from './components/ShowPersons'
 import Form from './components/Form'
 import personsService from './services/persons'
+import Notification from './components/Notification'
 
 const App = () => {
+  const [noteType, setNoteType] = useState('')
+  const [notification, setNotification] = useState(null)
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
@@ -25,11 +28,27 @@ const App = () => {
     if (persons.some(person => person.name === newObject.name)) {
       if (window.confirm(`${newObject.name} is already added to phonebook, replace the old number with a new one?`)) {
         const oldId = persons.filter(p => p.name === newObject.name)[0].id
-        personsService.update(oldId, newObject).then(response => {
-          setPersons(persons.map(p => p.name === response.name ? response : p))
-          setNewName('')
-          setNewNumber('')
-        })
+        personsService
+          .update(oldId, newObject)
+          .then(response => {
+            setPersons(persons.map(p => p.name === response.name ? response : p))
+            setNewName('')
+            setNewNumber('')
+            setNoteType('note')
+            setNotification(`Changed ${response.name}`)
+            setTimeout(() => {
+              setNotification(null)
+            }, 5000);
+          })
+          .catch(() => {
+            setNoteType('error')
+            setNotification(`Information of ${newObject.name} has already been removed from server`)
+            setNewName('')
+            setNewNumber('')
+            setTimeout(() => {
+              setNotification(null)
+            }, 5000);
+          })
       }
       return
     }
@@ -37,13 +56,18 @@ const App = () => {
       setPersons(persons.concat(newPerson))
       setNewName('')
       setNewNumber('')
+      setNoteType('note')
+      setNotification(`Added ${newPerson.name}`)
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000);
     })
   }
 
   const deleteWithId = (person) => {
     if (window.confirm(`Delete ${person.name}?`))
-      personsService.deletePerson(person.id).then((response) => {
-        setPersons(persons.filter(person => (person.id !== response.id)))
+      personsService.deletePerson(person.id).then(() => {
+        setPersons(persons.filter(p => (person.id !== p.id)))
     })
   }
 
@@ -56,6 +80,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification} type={noteType}/>
       <Filter filter={filter} handleNewFilter={handleNewFilter} />
 
       <h3>Add a new</h3>
